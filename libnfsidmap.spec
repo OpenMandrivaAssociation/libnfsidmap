@@ -3,7 +3,7 @@
 
 Summary:	Library to help mapping id's, mainly for NFSv4
 Name:		libnfsidmap
-Version:	0.19
+Version:	0.20
 Release:	%mkrel 1
 License:	BSD-like
 Group:		System/Libraries
