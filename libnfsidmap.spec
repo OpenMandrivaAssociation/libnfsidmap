@@ -16,7 +16,6 @@ BuildRequires:	automake1.7
 BuildRequires:	autoconf2.5
 BuildRequires:	pkgconfig
 BuildRequires:	libtool
-BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
 libnfsidmap is a library holding mulitiple methods of mapping
