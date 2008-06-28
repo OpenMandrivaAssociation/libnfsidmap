@@ -4,7 +4,7 @@
 Summary:	Library to help mapping id's, mainly for NFSv4
 Name:		libnfsidmap
 Version:	0.20
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	BSD-like
 Group:		System/Libraries
 URL:		http://www.citi.umich.edu/projects/nfsv4/linux/
@@ -16,7 +16,7 @@ BuildRequires:	automake1.7
 BuildRequires:	autoconf2.5
 BuildRequires:	pkgconfig
 BuildRequires:	libtool
-BuildRoot:	%{_tmppath}/%{name}-%{version}-root
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 libnfsidmap is a library holding mulitiple methods of mapping
@@ -68,12 +68,14 @@ export WANT_AUTOCONF_2_5=1
 rm -f configure
 libtoolize --copy --force && aclocal-1.7 && autoconf && automake-1.7 --gnu
 
+export LIBS="-llber"
+
 %configure2_5x
 
 %make
 
 %install
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %makeinstall_std
 
@@ -86,7 +88,7 @@ libtoolize --copy --force && aclocal-1.7 && autoconf && automake-1.7 --gnu
 %endif
 
 %clean
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files -n %{libname} 
 %defattr(-,root,root)
@@ -102,5 +104,3 @@ libtoolize --copy --force && aclocal-1.7 && autoconf && automake-1.7 --gnu
 %{_libdir}/*.a
 %{_libdir}/*.la
 %{_libdir}/pkgconfig/libnfsidmap.pc
-
-
