@@ -1,21 +1,21 @@
 %define	major 0
 %define libname	%mklibname nfsidmap %{major}
+%define _disable_ld_no_undefined 1
 
 Summary:	Library to help mapping id's, mainly for NFSv4
 Name:		libnfsidmap
-Version:	0.20
-Release:	%mkrel 4
+Version:	0.21
+Release:	%mkrel 1
 License:	BSD-like
 Group:		System/Libraries
 URL:		http://www.citi.umich.edu/projects/nfsv4/linux/
 Source0:	http://www.citi.umich.edu/projects/nfsv4/linux/libnfsidmap/libnfsidmap-%{version}.tar.gz
-Patch0:		nfsidmap-0.11-portable.diff
+Patch:      libnfsidmap-0.21-fix-plugins.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	openldap-devel
 BuildRequires:	openssl-devel
-BuildRequires:	automake1.7
-BuildRequires:	autoconf2.5
 BuildRequires:	pkgconfig
-BuildRequires:	libtool
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -59,20 +59,14 @@ This package contains the static libnfsidmap library and its
 header files.
 
 %prep
-
 %setup -q -n %{name}-%{version}
-%patch0 -p0
+%patch -p 1
 
 %build
-export WANT_AUTOCONF_2_5=1
-rm -f configure
-libtoolize --copy --force && aclocal-1.7 && autoconf && automake-1.7 --gnu
-
-export LIBS="-llber"
-
+autoreconf
+#export LIBS="-llber"
 %configure2_5x
-
-%make
+%__make
 
 %install
 rm -rf %{buildroot}
@@ -94,6 +88,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc AUTHORS ChangeLog COPYING README
 %{_libdir}/*.so.*
+%{_libdir}/%{name}
 %{_mandir}/man3/*
 
 %files -n %{libname}-devel
