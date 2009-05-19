@@ -65,7 +65,7 @@ header files.
 %patch1 -p 1
 
 %build
-autoreconf
+autoreconf -fi
 #export LIBS="-llber"
 %configure2_5x
 %__make
