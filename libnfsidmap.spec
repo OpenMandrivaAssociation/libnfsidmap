@@ -4,15 +4,12 @@
 
 Summary:	Library to help mapping id's, mainly for NFSv4
 Name:		libnfsidmap
-Version:	0.22
+Version:	0.23
 Release:	%mkrel 1
 License:	BSD-like
 Group:		System/Libraries
 URL:		http://www.citi.umich.edu/projects/nfsv4/linux/
 Source0:	http://www.citi.umich.edu/projects/nfsv4/linux/libnfsidmap/libnfsidmap-%{version}.tar.gz
-Patch0:      libnfsidmap-0.22-mv-plugins-in-private-dir.patch
-BuildRequires:	autoconf
-BuildRequires:	automake
 BuildRequires:	openldap-devel
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
@@ -60,8 +57,6 @@ header files.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p 1
-autoreconf -fi
 
 %build
 %configure2_5x
