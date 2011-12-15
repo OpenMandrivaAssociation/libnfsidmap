@@ -4,8 +4,8 @@
 
 Summary:	Library to help mapping id's, mainly for NFSv4
 Name:		libnfsidmap
-Version:	0.24
-Release:	%mkrel 2
+Version:	0.25
+Release:	1
 License:	BSD-like
 Group:		System/Libraries
 URL:		http://www.citi.umich.edu/projects/nfsv4/linux/
@@ -13,7 +13,6 @@ Source0:	http://www.citi.umich.edu/projects/nfsv4/linux/libnfsidmap/libnfsidmap-
 BuildRequires:	openldap-devel
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}
 
 %description
 libnfsidmap is a library holding mulitiple methods of mapping
@@ -40,7 +39,7 @@ secure communications.
 %package -n	%{libname}-devel
 Summary:	Static library and header files for the nfsidmap library
 Group:		Development/C
-Requires:	%{libname} = %{version}
+Requires:	%{libname} >= %{version}
 Provides:	libnfsidmap-devel = %{version}
 Provides:	nfsidmap-devel  = %{version}
 
@@ -67,30 +66,18 @@ rm -rf %{buildroot}
 
 %makeinstall_std
 
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
-%clean
-rm -rf %{buildroot}
+# cleanups
+rm -f %{buildroot}%{_libdir}/*.*a
 
 %files -n %{libname} 
-%defattr(-,root,root)
 %doc AUTHORS ChangeLog COPYING README
-%{_libdir}/*.so.*
+%{_libdir}/*.so.%{major}*
 %{_libdir}/%{name}
 %{_mandir}/man3/*
 %{_mandir}/man5/*
 
 %files -n %{libname}-devel
-%defattr(-,root,root)
 %doc AUTHORS ChangeLog COPYING README
 %{_includedir}/*
 %{_libdir}/*.so
-%{_libdir}/*.a
-%{_libdir}/*.la
 %{_libdir}/pkgconfig/libnfsidmap.pc
