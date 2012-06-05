@@ -1,11 +1,10 @@
 %define	major 0
 %define libname	%mklibname nfsidmap %{major}
-%define _disable_ld_no_undefined 1
 
 Summary:	Library to help mapping id's, mainly for NFSv4
 Name:		libnfsidmap
 Version:	0.25
-Release:	1
+Release:	2
 License:	BSD-like
 Group:		System/Libraries
 URL:		http://www.citi.umich.edu/projects/nfsv4/linux/
@@ -13,6 +12,7 @@ Source0:	http://www.citi.umich.edu/projects/nfsv4/linux/libnfsidmap/libnfsidmap-
 BuildRequires:	openldap-devel
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
+#BuildRequires:	voms-devel
 
 %description
 libnfsidmap is a library holding mulitiple methods of mapping
@@ -58,21 +58,26 @@ header files.
 %setup -q -n %{name}-%{version}
 
 %build
-%configure2_5x
-%__make
+%configure2_5x \
+    --disable-static \
+    --with-pluginpath=%{_libdir}/%{name} \
+
+#    --enable-gums
+
+%make
 
 %install
 rm -rf %{buildroot}
 
 %makeinstall_std
 
-# cleanups
-rm -f %{buildroot}%{_libdir}/*.*a
-
-%files -n %{libname} 
+%files -n %{libname}
 %doc AUTHORS ChangeLog COPYING README
 %{_libdir}/*.so.%{major}*
-%{_libdir}/%{name}
+%dir %{_libdir}/%{name}
+%{_libdir}/%{name}/nsswitch.so
+%{_libdir}/%{name}/static.so
+%{_libdir}/%{name}/umich_ldap.so
 %{_mandir}/man3/*
 %{_mandir}/man5/*
 
