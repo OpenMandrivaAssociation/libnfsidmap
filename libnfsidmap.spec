@@ -1,5 +1,6 @@
 %define	major 0
 %define libname	%mklibname nfsidmap %{major}
+%bcond_with	crosscompile
 
 Summary:	Library to help mapping id's, mainly for NFSv4
 Name:		libnfsidmap
@@ -58,6 +59,11 @@ header files.
 %setup -q -n %{name}-%{version}
 
 %build
+autoreconf -fi
+%if %{with crosscompile}
+export ac_cv_func_malloc_0_nonnull=yes
+%endif
+
 %configure2_5x \
     --disable-static \
     --with-pluginpath=%{_libdir}/%{name} \
